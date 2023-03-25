@@ -1,0 +1,372 @@
+//
+// Created by zhc on 2023/3/22.
+// 类和对象测试
+
+#include <iostream>
+#include <unistd.h>
+#include "point.h"
+#include "circle.h"
+
+const double PI=3.14;
+
+class Circle2
+{
+public:
+
+    int m_r;
+
+    double calulateZC()
+    {
+        return 2*PI*m_r;
+    }
+};
+
+
+class Student
+{
+public: //公共权限
+    //类中的属性和行为 我们统一称为 成员
+    //属性  成员属性 成员变量
+    //行为  成员函数 成员方法
+
+    std::string student_name;
+    std::string student_no;
+
+    void setName(std::string name){
+        student_name=name;
+    }
+    void setNo(std::string no){
+        student_no=no;
+    }
+
+    //行为
+    void showStudent(){
+        std::cout<<"姓名:"<<student_name<<";学号:"<<student_no<<std::endl;
+    }
+};
+
+
+class Person{
+
+public:
+    std::string person_name;
+
+protected:
+    int person_age;
+
+private:
+    std::string person_passwd;
+
+public:
+    void func(){
+        person_name="张三";
+        person_age=28;
+        person_passwd="123";
+    }
+
+};
+
+
+class Person2{
+
+private:
+    std::string person_name; // 姓名  可读可写
+    int person_age;     // 年龄  只读
+    std::string wife_name; //妻子 只写
+
+public:
+    void set_name(std::string name){
+        person_name=name;
+    }
+
+    std::string get_name(){
+        return person_name;
+    }
+
+    int get_age(){
+        return person_age;
+    }
+
+    void set_wife_name(std::string wife_name){
+        wife_name=wife_name;
+    }
+
+    void init(){
+        person_name="张三";
+        person_age=17;
+        wife_name="李四";
+    }
+
+};
+
+
+
+
+class Person3{
+
+public:
+    //对象的初始化和清理
+    //1.构造函数 进行初始化操作。
+
+    //1.1 构造函数
+    // 没有返回值 不用写void
+    // 函数名 与类名相同
+    // 构造函数可以有参数，可以发生重载
+    // 创建对象的时候，构造函数会自动调用，而且只调用一次
+    // 按照参数分类  无参构造(默认构造)和有参构造
+    // 按照类型分类  普通构造 拷贝构造
+    Person3(){
+        std::cout<<"person3 无参构造函数的调用" << std::endl;
+    }
+
+
+    Person3(int a,int height){
+        age = a;
+        m_Height = new int(height); //在堆区开辟数据做释放操作
+        std::cout<<"person3 有参构造函数的调用" << std::endl;
+    }
+
+        //拷贝构造函数  加const的目的是为了不改变引用p
+    Person3(const Person3 &p){
+        //将传入的人身上的所有属性，拷贝到我身上。
+        age = p.age;
+        //m_Height = p.m_Height;//编译器默认实现的就是这行代码
+        //深拷贝操作
+        m_Height = new int(*p.m_Height);
+        std::cout<<"person3 拷贝构造函数的调用" << std::endl;
+    }
+
+
+    ~Person3(){
+        //在堆区开辟数据做释放操作
+        if(m_Height !=NULL){
+            delete m_Height;
+            m_Height = NULL;
+        }
+        std::cout<<"person3 析构函数的调用" << std::endl;
+    }
+
+    int age;//年龄
+    int *m_Height; //身高
+};
+
+void doWork(Person3 p){
+}
+
+Person3 doWork2(){
+    Person3 p1;
+    return p1;
+}
+
+
+//构造和析构函数都是必须有的实现，如果我们自己不提供，编译器会提供一个空实现的构造和析构函数
+void test01(){
+    //1.括号法
+//    Person3 p; //在栈上的数据，test01执行完毕后，释放这个对象。
+//    Person3 p2(10); //有参构造函数
+//    Person3 P3(p2);  //拷贝构造函数
+
+    //Person3 p1(); 这个并不是创建一个Person3类型的对象，而是创建了一个返回是Person3类型，名字为p1的函数。是个函数声明，一定要注意这个。
+
+    //2.显示法
+//    Person3 p4;
+//    Person3 p5 = Person3(10);
+//    Person3 p6 = Person3(p5);
+
+    //Person3(10); //匿名对象  特点:当前行执行结束之后，系统会立即回收掉匿名对象
+    //注意事项2
+    //不要利用拷贝构造函数 初始化匿名对象 编译器会认为Person(p3) == Person p3;
+//    Person3(p6);
+
+    //3.隐式转换法
+    // 如果不了解这个语法的话，看到这一行确实很懵。
+//    Person3 p7 = 10;  //相当于写了 Person3 p7 = Person3(10);
+//    Person3 p8 = p7;
+
+    //1.使用一个已经创建完毕的对象来初始化一个新对象
+//    Person3 p9(20);
+//    Person3 p10(p9);
+//    std::cout<<"p10的年龄为:"<<p10.age<<std::endl;
+
+    //2.值传递的方式给函数参数传值:
+    Person3 p11;
+    doWork(p11);
+
+    //3.值返回局部对象
+    Person3 p12  = doWork2();
+
+    Person3 p13(18,160);
+    std::cout<<"p13的年龄为:"<<p13.age<<"身高为:"<<*p13.m_Height<<std::endl;
+
+    Person3 p14(p13);
+    std::cout<<"p14的年龄为:"<<p14.age<<"身高为:"<<*p14.m_Height<<std::endl;
+
+}
+
+
+class C1
+{
+    int m_A; //默认权限 是私有
+};
+
+struct C2{
+    int m_A;// 默认是 公共
+};
+
+
+class Cube{
+
+    //立方体类设计
+    //1.创建立方体类
+    //2.设计属性
+    //3.设计行为 获取立方体面积和体积
+    //4.分别利用全局函数和成员函数 判断两个立方体是否相等。这道题的利用成员函数来判断两个立方体是否相同，这点很是巧妙
+private:
+    double c_long;
+    double width;
+    double hight;
+
+public:
+    void set_long(int m_long){
+        c_long = m_long;
+    }
+    void set_width(int m_width){
+        width = m_width;
+    }
+    void set_hight(int m_hight){
+        hight = m_hight;
+    }
+
+    double get_long(){
+        return c_long;
+    }
+    double get_width(){
+        return width;
+    }
+    double get_hight(){
+        return hight;
+    }
+    double get_area(){
+        return 2*(c_long*width+width*hight+c_long*hight);
+    }
+    double get_volume(){
+        return c_long*width*hight;
+    }
+
+    bool isSame(Cube &c2){
+        if(c_long==c2.get_long() && hight==c2.get_hight() && width==c2.get_width()){
+            return true;
+        } else return false;
+    }
+
+};
+
+
+
+bool isSame(Cube &c1,Cube &c2){
+    if(c1.get_long()==c2.get_long() && c1.get_hight()==c2.get_hight() && c1.get_width()==c2.get_width()){
+        return true;
+    } else return false;
+}
+
+void isInCircle(Circle &c,Point &p){
+    //计算两点之间距离的平方
+    int distance = (c.getCenter().getX()-p.getX() * (c.getCenter().getX() - p.getX())+
+            (c.getCenter().getY() - p.getY())*(c.getCenter().getX()-p.getY()));
+    //计算半径的平方
+    int rDistance = c.getR() * c.getR();
+
+    //判断关系
+    if(distance == rDistance){
+        std::cout<<"在圆上"<<std::endl;
+    } else if(distance>rDistance){
+        std::cout<<"在圆外"<<std::endl;
+    }else std::cout<<"在圆内"<<std::endl;
+}
+
+
+int main()
+{
+    Circle2 c1 ;
+    c1.m_r=10;
+    std::cout<<c1.calulateZC()<<std::endl;
+
+    Student s1;
+    s1.student_name="张三";
+    s1.student_no="001";
+    s1.showStudent();
+//    std::cout<<"s1的名字:"<<s1.student_name<<std::endl;
+//    std::cout<<"s1的号码:"<<s1.student_no<<std::endl;
+
+    Student s2;
+    s2.student_name="李四";
+    s2.student_no="002";
+    s2.showStudent();
+//    std::cout<<"s2的名字:"<<s2.student_name<<std::endl;
+//    std::cout<<"s2的号码:"<<s2.student_no<<std::endl;
+
+    Student s3;
+    s3.setName("王五");
+    s3.setNo("003");
+    s3.showStudent();
+
+    Person p1;
+    p1.person_name;
+    p1.func();
+
+    C1 c_test1;
+    //报错了，访问不了m_A
+    //c_test1.m_A;
+
+    C2 c_test2;
+    c_test2.m_A;
+
+    Person2 p2;
+    p2.init();
+    std::cout<<"获取姓名:"<<p2.get_name()<<";"<<std::endl;
+    std::cout<<"获取年龄:"<<p2.get_age()<<";"<<std::endl;
+    std::cout<<"无法获取妻子名字:"<<";"<<std::endl;
+
+    Cube cube1;
+    cube1.set_long(2.1);
+    cube1.set_hight(3.1);
+    cube1.set_width(3.2);
+
+
+    Cube cube2;
+    cube2.set_long(1.5);
+    cube2.set_width(3.1);
+    cube2.set_hight(2.5);
+
+    bool issame = isSame(cube1,cube2);
+    if(issame){
+        std::cout<<"全局函数:两个立方体是相同的。"<<std::endl;
+    }else std::cout<<"全局函数:两个立方体是不同的。"<<std::endl;
+
+    bool issame2 = cube1.isSame(cube2);
+    if(issame2){
+        std::cout<<"成员函数:两个立方体是相同的。"<<std::endl;
+    }else std::cout<<"成员函数:两个立方体是不同的。"<<std::endl;
+
+
+    Circle c;
+    c.setR(10);
+    Point center;
+    center.setX(10);
+    center.setY(0);
+    c.setCenter(center);
+
+    //创建点
+    Point p;
+    p.setX(10);
+    p.setY(9);
+
+    //判断关系
+    isInCircle(c,p);
+
+    test01();
+    //Person3 p3;
+    //pause();
+    //system("pause");
+
+}
