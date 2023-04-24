@@ -1,0 +1,197 @@
+#include <iostream>
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+
+class LinkList {
+private:
+    class Node {
+    public:
+        int data;
+        Node *next;
+    };
+    Node *head;
+    int length = 0;
+public:
+    LinkList();
+
+    void create(int n);//初始化n个结点的单链表
+
+    void print() const;//打印单链表中的数据
+
+    int getLength() const;//获取单链表的长度
+
+    void isEmpty() const;//判断单链表是否为空
+
+    int search(int index) const;//查找索引为index的数据并返回
+
+    int find(int elem) const;//查找数据为elem的索引并返回
+
+    void insertByIndex(int index, int data);//在索引为index之前的位置插入数据为data的结点
+
+    void deleteByIndex(int index);//删除索引为index的结点
+};
+LinkList::LinkList() {
+    head = new Node;
+    head->data = 0;
+    head->next = nullptr;
+}
+
+int LinkList::getLength() const {
+    cout << "链表中的元素个数为：" << length << endl;
+    return length;
+}
+
+void LinkList::create(int n) {
+    Node *pre = head;
+    length = n;
+    int i = 1;
+    while (i <= n) {
+        cout << "请输入第" << i << "个结点的数据：";
+        Node *cur = new Node;
+        cin >> cur->data;
+        ++i;
+        pre->next = cur;
+        pre = cur;
+        cur->next = nullptr;
+    }
+}
+
+void LinkList::print() const {
+    Node *cur = head->next;
+    if (!length) {
+        cout << "链表为空！" << endl;
+        return;
+    }
+    cout << "*******************" << endl;
+    cout << "链表中的元素为：" << endl;
+    while (cur) {
+        cout << cur->data << " ";
+        cur = cur->next;
+    }
+    cout << endl;
+    cout << "*******************" << endl;
+}
+
+void LinkList::isEmpty() const {
+    if (!length) {
+        cout << "链表为空~" << endl;
+        return;
+    }
+    cout << "链表不为空" << "，";
+    this->getLength();
+}
+
+int LinkList::search(int index) const { //认为索引从0开始
+    if (index < 0 || index >= length)
+        cout << "索引输入错误！" << endl;
+    else {
+        Node *temp = head->next;
+        int i = 0;
+        while (temp) {
+            if (i == index) {
+                cout << "链表中索引为" << index << "的数据为" << temp->data << endl;
+                return temp->data;
+            } else {
+                ++i;
+                temp = temp->next;
+            }
+        }
+    }
+    return -1;//假定链表中不存入负数
+}
+
+int LinkList::find(int elem) const {
+    Node *cur = head->next;
+    int index = 0;
+    while (cur) {
+        if (cur->data == elem)
+            return index;
+        else {
+            cur = cur->next;
+            ++index;
+        }
+    }
+    cout << elem << "不在链表中！" << endl;
+    return -1;
+}
+
+void LinkList::insertByIndex(int index, int data) { //在index之前插入数据为data的结点
+    if (index < 0 || index >= length) {
+        cout << "索引位置不合法" << endl;
+    } else {
+        Node *cur = head;
+        int pos = 0;
+        while (pos != index) {
+            cur = cur->next;
+            ++pos;
+        }
+        Node *temp = new Node;
+        temp->data = data;
+        temp->next = cur->next;
+        cur->next = temp;
+        ++length;
+        cout << data << "插入成功！" << endl;
+    }
+}
+
+void LinkList::deleteByIndex(int index) {
+    if (index < 0 || index >= length) {
+        cout << "索引输入错误！" << endl;
+    } else {
+        Node *cur = head;
+        int pos = 0;
+        while (pos != index) {
+            cur = cur->next;
+            ++pos;
+        }
+        Node *temp = cur->next;
+        cur->next = temp->next;
+        delete temp;
+        --length;
+        cout << "删除成功!" << endl;
+    }
+}
+
+/*
+ * Software:Jetbrains clion 2022.1
+ * Created by xiaoxin_zh@foxmail.com
+ * Implementing Singly Linked List with C++
+ */
+
+
+int main() {
+    LinkList linkList;
+    cout << "请输入链表中结点的个数：";
+    int n;
+    cin >> n;
+    linkList.create(n);
+    linkList.print();
+    linkList.getLength();
+    linkList.isEmpty();
+    cout << "请输入需要查询的索引位置：";
+    int index;
+    cin >> index;
+    linkList.search(index);
+    cout << "请输入需要查询的数据:";
+    int elem;
+    cin >> elem;
+    if (linkList.find(elem) != -1) {
+        cout << elem << "在链表中的索引位置是" << linkList.find(elem) << endl;
+    }
+    cout << "请输入需要插入结点的位置索引和数值：";
+    int pos, data;
+    cin >> pos >> data;
+    linkList.insertByIndex(pos, data);
+    linkList.print();
+    linkList.getLength();
+    cout << "请输入需要删除的结点索引：";
+    int deleteIndex;
+    cin >> deleteIndex;
+    linkList.deleteByIndex(deleteIndex);
+    linkList.print();
+    linkList.getLength();
+    return 0;
+}
