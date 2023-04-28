@@ -12,10 +12,17 @@ int main() {
     s.push(2);
     s.push(3);
 
-    //打印栈
-    while (!s.empty()) {
-        cout << s.top() << endl;
-        s.pop();
+    //打印栈 这个方法真是尴尬 把原来栈中的内容都丢了。
+    //while (!s.empty()) {
+    //    cout << s.top() << endl;
+    //    s.pop();
+    //}
+    
+    stack<int> s2;
+    s2=s;
+    while (!s2.empty()) {
+        cout << s2.top() << endl;
+        s2.pop();
     }
 
     // 取栈顶
