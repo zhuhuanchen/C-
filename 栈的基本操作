@@ -1,0 +1,41 @@
+//没有做封装，主要的方法有pop出栈 push插入，s.top打印栈顶, 打印栈里面的内容
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+int main() {
+    stack<int> s;
+
+    // 入栈
+    s.push(1);
+    s.push(2);
+    s.push(3);
+
+    //打印栈
+    while (!s.empty()) {
+        cout << s.top() << endl;
+        s.pop();
+    }
+
+    // 取栈顶
+    cout << "栈顶元素为：" << s.top() << endl;
+
+    // 出栈
+    s.pop();
+
+    // 取栈顶
+    cout << "栈顶元素为：" << s.top() << endl;
+
+    // 判断栈是否为空
+    if (s.empty()) {
+        cout << "栈为空" << endl;
+    } else {
+        cout << "栈不为空" << endl;
+    }
+
+
+
+
+    return 0;
+}
