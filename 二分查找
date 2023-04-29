@@ -6,7 +6,7 @@ int BinarySearch(int myarray[], int n, int key)
     int mid=0;
     while(low<=high)
     {
-        mid=(low+high)/2;
+        mid=(low+high)/2; //注意这个地方取的是下界
         if (myarray[mid]==key)
             return mid;
         if (myarray[mid]<key)
