@@ -1,0 +1,52 @@
+#include <iostream>
+#include "set"
+#include "sstream"
+
+using namespace std;
+
+//二分查找
+//根据百度百科和维基百科来做的。mid=start+(end-start)/2;相当于取（start-end）/2的下界
+
+int find(vector<int>array_num,int length,int find_num){
+    int start=0;
+    int end=length-1;
+    int mid=0;
+    int count=0;
+    if(array_num[start]>find_num || array_num[end]<find_num){
+        return -1;
+    }
+
+    while(start<end){
+//        cout<<"start的值："<<start<<endl;
+//        cout<<"end的值："<<end<<endl;
+        count++;
+        if(array_num[start]==find_num) {return start;}
+        if(array_num[end]==find_num) {return end;}
+        mid=start+(end-start)/2;
+        if(array_num[mid]==find_num){return mid;}
+        if(array_num[mid]>find_num){end=mid-1;}
+        if(array_num[mid]<find_num){start=mid+1;}
+    }
+//    cout<<"总共查找了"<<count<<endl;
+
+    return -1;
+}
+
+
+int main() {
+
+    vector<int> array_num;
+    int length=100;
+    for(int i=0;i<=length-1;i++){
+        array_num.push_back(i);
+    }
+
+    int  find_num=2;
+
+    int location=find(array_num,length,find_num);
+    cout<<"结果的下标是"<<location<<endl;
+
+    return 0;
+}
+
+
