@@ -1,0 +1,53 @@
+#include <iostream>
+#include "set"
+#include "sstream"
+
+using namespace std;
+
+//冒泡排序
+
+void bubble_order(vector<int> &array_num,int length){ //特别注意这个地方要传引用进去，如果传值进去的话，array_num是不会变的
+    int i;
+    for(i=0;i<=length-1;i++){ //这个地方为什么要限制i<=length-1，不是因为length-1是vector的长度，而是因为最多经过length-1次排序就全部有序了。这个地方也可以做成无限循环，根据打标来退出循环。
+        int flag=0;
+        for(int j=0;j<=length-1-1-i;j++){
+//            int temp=0;
+            if(array_num[j]>array_num[j+1]){
+                flag=1;
+               int temp=array_num[j];
+                array_num[j]=array_num[j+1];
+                array_num[j+1]=temp;
+            }
+        }
+        if(flag==0){
+            break;
+        }
+    }
+    cout<<"总共循环了"<<i<<"次"<<endl;
+
+}
+
+
+int main() {
+
+    vector<int> array_num;
+    int length=100;
+    for(int i=length-1;i>=0;i--){
+        array_num.push_back(i);
+    }
+
+    cout<<"排序之前:"<<endl;
+    for(int c:array_num){
+        cout<<c<<" ";
+    }
+
+    bubble_order(array_num,length);
+    cout<<"排序之后:"<<endl;
+    for(int c:array_num){
+        cout<<c<<" ";
+    }
+
+    return 0;
+}
+
+
