@@ -1,0 +1,81 @@
+#include <iostream>
+
+// 定义二叉树节点结构
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// 先序遍历函数
+void preorderTraversal(TreeNode* root) {
+    if (root == nullptr) return;  // 递归终止条件
+
+    // 先输出当前节点值
+    std::cout << root->val << " ";
+
+    // 递归遍历左子树
+    preorderTraversal(root->left);
+
+    // 递归遍历右子树
+    preorderTraversal(root->right);
+}
+
+// 后序遍历函数
+void lastorderTraversal(TreeNode* root) {
+    if (root == nullptr) return;  // 递归终止条件
+
+
+
+    // 递归遍历左子树
+    lastorderTraversal(root->left);
+
+    // 递归遍历右子树
+    lastorderTraversal(root->right);
+
+    // 先输出当前节点值
+    std::cout << root->val << " ";
+
+}
+
+// 中序遍历函数
+void midorderTraversal(TreeNode* root) {
+    if (root == nullptr) return;  // 递归终止条件
+
+
+
+    // 递归遍历左子树
+    midorderTraversal(root->left);
+    // 先输出当前节点值
+    std::cout << root->val << " ";
+    // 递归遍历右子树
+    midorderTraversal(root->right);
+
+
+
+}
+
+
+
+int main() {
+    // 创建一个二叉树
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    // 调用先序遍历函数
+    std::cout << "先序遍历结果：";
+    preorderTraversal(root);
+
+    std::cout << "中序遍历结果：";
+    midorderTraversal(root);
+
+    std::cout << "后序遍历结果：";
+    lastorderTraversal(root);
+
+
+    return 0;
+}
