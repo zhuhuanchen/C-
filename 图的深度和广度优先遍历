@@ -1,0 +1,72 @@
+ #include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
+
+using namespace std;
+
+// 图的邻接列表表示法
+vector<vector<int>> graph = {
+        {1, 2},     // 节点 0 的邻居节点
+        {0, 3, 4},  // 节点 1 的邻居节点
+        {0, 5},     // 节点 2 的邻居节点
+        {1},        // 节点 3 的邻居节点
+        {1},        // 节点 4 的邻居节点
+        {2}         // 节点 5 的邻居节点
+};
+
+void BFS(int start) {
+    vector<bool> visited(graph.size(), false); // 标记节点是否已访问过
+    queue<int> q;  // 存储待访问的节点
+
+    visited[start] = true; // 标记起始节点为已访问
+    q.push(start);  // 将起始节点加入队列
+
+    while (!q.empty()) {
+        int current = q.front(); // 获取队列中的第一个节点
+        q.pop(); // 弹出队列中的第一个节点
+        cout << current << " "; // 输出当前节点的值
+
+        // 遍历当前节点的邻居节点
+        for (int neighbor : graph[current]) {
+            if (!visited[neighbor]) { // 如果邻居节点未被访问过
+                visited[neighbor] = true; // 标记邻居节点为已访问
+                q.push(neighbor); // 将邻居节点加入队列
+            }
+        }
+    }
+}
+
+void DFS(int start) {
+    vector<bool> visited(graph.size(), false); // 标记节点是否已访问过
+    stack<int> s; // 存储待访问的节点
+
+    visited[start] = true; // 标记起始节点为已访问
+    s.push(start); // 将起始节点加入栈
+
+    while (!s.empty()) {
+        int current = s.top(); // 获取栈顶节点
+        s.pop(); // 弹出栈顶节点
+        cout << current << " "; // 输出当前节点的值
+
+        // 遍历当前节点的邻居节点
+        for (int neighbor : graph[current]) {
+            if (!visited[neighbor]) { // 如果邻居节点未被访问过
+                visited[neighbor] = true; // 标记邻居节点为已访问
+                s.push(neighbor); // 将邻居节点加入栈
+            }
+        }
+    }
+}
+
+int main() {
+    cout << "BFS Traversal starting from node 0: ";
+    BFS(0); // 从节点 0 开始进行广度优先遍历
+    cout << endl;
+
+    cout << "DFS Traversal starting from node 0: ";
+    DFS(0); // 从节点 0 开始进行深度优先遍历
+    cout << endl;
+
+    return 0;
+}
