@@ -1,6 +1,7 @@
 #include <iostream>
+#include "queue"
 
-// 定义二叉树节点结构
+// 二叉树的前中后序遍历和层序遍历
 struct TreeNode {
     int val;
     TreeNode* left;
@@ -52,9 +53,30 @@ void midorderTraversal(TreeNode* root) {
     // 递归遍历右子树
     midorderTraversal(root->right);
 
-
-
 }
+//层序遍历  使用了一个队列 
+void levelOrderTraversal(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    std::queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* current = q.front();
+        q.pop();
+        std::cout << current->val << " ";  // 访问当前节点
+
+        if (current->left != nullptr) {
+            q.push(current->left);  // 将左子节点加入队列
+        }
+        if (current->right != nullptr) {
+            q.push(current->right);  // 将右子节点加入队列
+        }
+    }
+}
+
 
 
 
@@ -75,6 +97,10 @@ int main() {
 
     std::cout << "后序遍历结果：";
     lastorderTraversal(root);
+
+    std::cout << "层序遍历结果：";
+    levelOrderTraversal(root);
+
 
 
     return 0;
